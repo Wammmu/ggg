@@ -1,0 +1,74 @@
+{
+  "version": 1,
+
+  "protagonist": {
+    "name": "주인공",
+    "gender": "여성",
+    "realm": "특급",
+    "affiliation": "무소속",
+
+    "reputation": [
+      "도문: 주목받는 수행자",
+      "상단: 신뢰 가능",
+      "민간: 이름이 알려지기 시작함"
+    ]
+  },
+
+  "companions": [
+    {
+      "name": "아르반",
+      "realm": "특급",
+      "status": "정상 · 집중 양호",
+      "image": "assets/sd/arvan.webp"
+    },
+    {
+      "name": "현리",
+      "realm": "특급",
+      "status": "영력 안정 · 피로 낮음",
+      "image": "assets/sd/hyunri.webp"
+    },
+    {
+      "name": "라마니",
+      "realm": "특급",
+      "status": "경상 · 전의 높음",
+      "image": "assets/sd/ramani.webp"
+    },
+    {
+      "name": "련화",
+      "realm": "특급",
+      "status": "정상 · 감정 기복 있음",
+      "image": "assets/sd/ryeonhwa.webp"
+    }
+  ],
+
+  "userStatus": {
+    "body": 82,
+    "fatigue": 41,
+    "recoil": 24,
+
+    "cultivation": {
+      "task": "다음 경지 검증 준비",
+      "progress": 72
+    }
+  },
+
+  "inventory": {
+    "money": 37,
+    "moneyUnit": "은전",
+
+    "items": [
+      {
+        "name": "부적",
+        "qty": 23
+      },
+      {
+        "name": "약병",
+        "qty": 4
+      },
+      {
+        "name": "은침",
+        "qty": 12
+      }
+    ]
+  }
+}
