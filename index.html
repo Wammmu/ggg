@@ -576,6 +576,239 @@
       .lower-grid{grid-template-columns:1fr}
       .lower-grid .panel:last-child{grid-column:auto}
     }
+
+
+    /* =========================================================
+       COMPACT VIEW - 채팅용
+       기본 데스크톱 폭 760px 내외 / 작은 높이 유지
+       ========================================================= */
+    #compactShell{
+      width:min(760px,100%);
+      margin:0 auto;
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      background:linear-gradient(180deg,rgba(15,21,36,.92),rgba(8,12,20,.96));
+      box-shadow:var(--shadow);
+    }
+
+    .view-switch{
+      display:flex;
+      gap:7px;
+      flex-wrap:wrap;
+    }
+
+    .view-btn.active{
+      color:#fff0bd;
+      border-color:rgba(216,189,116,.38);
+      background:rgba(216,189,116,.11);
+    }
+
+    .compact-head{
+      padding:16px 18px 13px;
+      border-bottom:1px solid var(--line);
+      background:
+        radial-gradient(circle at 92% 20%,rgba(216,189,116,.09),transparent 28%),
+        linear-gradient(135deg,#151d30,#0c111d);
+    }
+
+    .compact-head-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+    }
+
+    .compact-name{
+      margin:0;
+      font-size:1.6rem;
+      line-height:1;
+      letter-spacing:-.035em;
+    }
+
+    .compact-meta{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:9px;
+    }
+
+    .rank-badge{
+      --rank-rgb:165,175,195;
+      border-color:rgba(var(--rank-rgb),.34)!important;
+      background:rgba(var(--rank-rgb),.08)!important;
+      color:rgb(var(--rank-rgb))!important;
+    }
+
+    .compact-rep{
+      display:flex;
+      flex-wrap:wrap;
+      gap:5px;
+      justify-content:flex-end;
+      max-width:330px;
+    }
+
+    .compact-rep .rep-tag{
+      font-size:.64rem;
+      padding:5px 7px;
+    }
+
+    .compact-section{
+      padding:11px 14px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .compact-section:last-child{border-bottom:0}
+
+    .compact-section-label{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+      font-size:.73rem;
+      font-weight:700;
+    }
+
+    .compact-party{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:7px;
+    }
+
+    .compact-card{
+      overflow:hidden;
+      min-width:0;
+      border:1px solid rgba(255,255,255,.075);
+      border-radius:13px;
+      background:rgba(255,255,255,.024);
+    }
+
+    .compact-sd{
+      height:75px;
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      overflow:hidden;
+      background:radial-gradient(circle at 50% 85%,rgba(var(--accent-rgb),.19),transparent 48%);
+    }
+
+    .compact-sd img{
+      height:72px;
+      width:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 7px 11px rgba(0,0,0,.34));
+    }
+
+    .compact-sd-fallback{
+      position:absolute;
+      inset:10px;
+      display:grid;
+      place-items:center;
+      border:1px dashed rgba(255,255,255,.10);
+      border-radius:9px;
+      color:#758298;
+      text-align:center;
+      font-size:.58rem;
+    }
+    .compact-sd.has-image .compact-sd-fallback{display:none}
+
+    .compact-card-info{
+      padding:6px 5px 7px;
+      border-top:1px solid rgba(255,255,255,.055);
+      text-align:center;
+    }
+    .compact-card-info strong{
+      display:block;
+      font-size:.68rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .compact-card-info span{
+      display:block;
+      margin-top:2px;
+      color:#d8c27b;
+      font-size:.56rem;
+    }
+
+    .compact-bottom{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:11px;
+    }
+
+    .compact-meters{display:grid;gap:6px}
+    .compact-meter-row{
+      display:grid;
+      grid-template-columns:37px 1fr 31px;
+      gap:6px;
+      align-items:center;
+      font-size:.62rem;
+    }
+    .compact-meter-row span:first-child{color:#cbd5e6}
+    .compact-meter-row span:last-child{color:#7f8da3;text-align:right}
+    .compact-meter{
+      height:6px;
+      background:#252b38;
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .compact-meter i{
+      display:block;
+      height:100%;
+      width:var(--value,50%);
+      border-radius:inherit;
+      background:var(--fill,#67d7a1);
+      transition:width .4s ease;
+    }
+
+    .compact-training{
+      margin-top:6px;
+      color:#98a6ba;
+      font-size:.6rem;
+      line-height:1.45;
+    }
+
+    .compact-money{
+      border:1px solid rgba(216,189,116,.14);
+      background:rgba(216,189,116,.05);
+      border-radius:11px;
+      padding:8px 9px;
+    }
+    .compact-money small{display:block;color:#8290a5;font-size:.57rem}
+    .compact-money strong{display:block;color:#f0d78c;font-size:1rem;margin-top:2px}
+
+    .compact-party-status{
+      margin-top:6px;
+      padding:7px 8px;
+      border:1px solid rgba(255,255,255,.065);
+      border-radius:10px;
+      background:rgba(255,255,255,.02);
+      color:#8d9bb0;
+      font-size:.59rem;
+      line-height:1.45;
+    }
+
+    body[data-view="compact"] #fullShell{display:none}
+    body[data-view="full"] #compactShell{display:none}
+
+    @media(max-width:720px){
+      .compact-head-row{display:block}
+      .compact-rep{justify-content:flex-start;max-width:none;margin-top:8px}
+    }
+
+    @media(max-width:480px){
+      #compactShell{border-radius:18px}
+      .compact-head{padding:13px 11px 11px}
+      .compact-name{font-size:1.35rem}
+      .compact-section{padding:9px 8px 10px}
+      .compact-party{gap:4px}
+      .compact-sd{height:63px}
+      .compact-sd img{height:60px}
+      .compact-card-info{padding:5px 3px 6px}
+      .compact-bottom{grid-template-columns:1fr}
+    }
+
   </style>
 </head>
 <body>
@@ -589,13 +822,61 @@
         </div>
       </div>
       <div class="toolbar">
+        <div class="view-switch">
+          <button class="btn view-btn" data-view-btn="compact">채팅용 Compact</button>
+          <button class="btn view-btn" data-view-btn="full">전체 Full</button>
+        </div>
         <button class="btn" id="saveBtn">상태 저장</button>
         <button class="btn" id="resetBtn">초기화</button>
         <button class="btn gold" id="demoBtn">데모 변화</button>
       </div>
     </div>
 
-    <main class="shell">
+
+    <!-- 채팅용 Compact View: 기본 ?view=compact -->
+    <main id="compactShell">
+      <section class="compact-head">
+        <div class="compact-head-row">
+          <div>
+            <h1 class="compact-name" id="compactName">주인공</h1>
+            <div class="compact-meta">
+              <span class="badge"><b>성별</b><span id="compactGender"></span></span>
+              <span class="badge rank-badge" id="compactRealmBadge"><b>경지</b><span id="compactRealm"></span></span>
+              <span class="badge"><b>소속</b><span id="compactAffiliation"></span></span>
+            </div>
+          </div>
+          <div class="compact-rep" id="compactReputation"></div>
+        </div>
+      </section>
+
+      <section class="compact-section">
+        <div class="compact-section-label">
+          <span>👥 현재 동행 중</span>
+          <span id="compactPartyCount" style="color:#7d8aa0;font-weight:500"></span>
+        </div>
+        <div class="compact-party" id="compactParty"></div>
+      </section>
+
+      <section class="compact-section">
+        <div class="compact-bottom">
+          <div>
+            <div class="compact-section-label"><span>❤️‍🩹 유저 상태</span></div>
+            <div class="compact-meters">
+              <div class="compact-meter-row"><span>신체</span><div class="compact-meter"><i id="compactBodyBar" style="--fill:#67d7a1"></i></div><span id="compactBodyText"></span></div>
+              <div class="compact-meter-row"><span>피로</span><div class="compact-meter"><i id="compactFatigueBar" style="--fill:#e3b86d"></i></div><span id="compactFatigueText"></span></div>
+              <div class="compact-meter-row"><span>반동</span><div class="compact-meter"><i id="compactRecoilBar" style="--fill:#b98cff"></i></div><span id="compactRecoilText"></span></div>
+            </div>
+            <div class="compact-training" id="compactTraining"></div>
+          </div>
+          <div>
+            <div class="compact-money"><small>🎒 현재 소지금</small><strong><span id="compactMoney"></span> <span id="compactMoneyUnit"></span></strong></div>
+            <div class="compact-party-status" id="compactPartyStatus"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <main class="shell" id="fullShell">
       <!-- 상단: 주인공 프로필 -->
       <section class="hero">
         <div class="eyebrow">PROTAGONIST PROFILE</div>
@@ -607,7 +888,7 @@
 
             <div class="hero-badges">
               <span class="badge"><b>성별</b><span id="heroGender">여성</span></span>
-              <span class="badge"><b>경지</b><span id="heroRealm">연단경 중기</span></span>
+              <span class="badge"><b>경지</b><span id="heroRealm">상급</span></span>
               <span class="badge"><b>소속</b><span id="heroAffiliation">무소속</span></span>
             </div>
           </div>
@@ -713,7 +994,7 @@
       protagonist: {
         name: "주인공",
         gender: "여성",
-        realm: "연단경 중기",
+        realm: "상급",
         affiliation: "무소속",
         subtitle: "현재 파티와 함께 만다라바르샤를 여행 중.",
         reputation: [
@@ -727,7 +1008,7 @@
         {
           id: "arvan",
           name: "아르반",
-          realm: "연기경",
+          realm: "상급",
           status: "정상 · 집중 양호",
           statusColor: "#67d7a1",
           accentRGB: "90,130,210",
@@ -736,7 +1017,7 @@
         {
           id: "hyunri",
           name: "현리",
-          realm: "심법승",
+          realm: "중급",
           status: "영력 안정 · 피로 낮음",
           statusColor: "#79cbb4",
           accentRGB: "210,170,95",
@@ -745,7 +1026,7 @@
         {
           id: "ramani",
           name: "라마니",
-          realm: "검심경",
+          realm: "중급",
           status: "경상 · 전의 높음",
           statusColor: "#e3b86d",
           accentRGB: "190,75,75",
@@ -754,7 +1035,7 @@
         {
           id: "ryeonhwa",
           name: "련화",
-          realm: "연단경 중기",
+          realm: "특급",
           status: "정상 · 감정 기복 있음",
           statusColor: "#e46a7d",
           accentRGB: "155,30,60",
@@ -766,7 +1047,7 @@
         body: 82,
         fatigue: 41,
         recoil: 24,
-        cultivationTask: "봉인술 완성",
+        cultivationTask: "다음 경지 검증 준비",
         cultivationProgress: 72,
         abilities: ["부적진", "홍사박", "진언결계", "봉혼부"]
       },
@@ -795,6 +1076,50 @@
       return Math.max(min,Math.min(max,n));
     }
 
+    // 경지: 초월 > 신위 > 극위 > 특급 > 상급 > 중급 > 하급
+    const REALM_ORDER = ["초월","신위","극위","특급","상급","중급","하급"];
+    const REALM_COLOR = {
+      "초월":"255,220,120",
+      "신위":"235,200,255",
+      "극위":"175,135,255",
+      "특급":"115,165,255",
+      "상급":"95,210,165",
+      "중급":"220,185,105",
+      "하급":"165,175,195"
+    };
+
+    function validRealm(value){
+      return REALM_ORDER.includes(value) ? value : "하급";
+    }
+
+    function rankRGB(realm){
+      return REALM_COLOR[validRealm(realm)] || REALM_COLOR["하급"];
+    }
+
+    function getView(){
+      const q = new URLSearchParams(location.search);
+      return q.get("view") === "full" ? "full" : "compact";
+    }
+
+    function applyView(){
+      const view = getView();
+      document.body.dataset.view = view;
+      document.querySelectorAll("[data-view-btn]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.viewBtn === view);
+      });
+    }
+
+    function setView(view){
+      const url = new URL(location.href);
+      url.searchParams.set("view", view === "full" ? "full" : "compact");
+      history.replaceState(null, "", url);
+      applyView();
+    }
+
+    document.querySelectorAll("[data-view-btn]").forEach(btn => {
+      btn.addEventListener("click", () => setView(btn.dataset.viewBtn));
+    });
+
     function loadState(){
       try{
         const saved = localStorage.getItem("party-status-demo");
@@ -816,7 +1141,7 @@
       const p = partyState.protagonist;
       document.querySelector("#heroName").textContent = p.name;
       document.querySelector("#heroGender").textContent = p.gender;
-      document.querySelector("#heroRealm").textContent = p.realm;
+      document.querySelector("#heroRealm").textContent = validRealm(p.realm);
       document.querySelector("#heroAffiliation").textContent = p.affiliation;
       document.querySelector("#heroSubtitle").textContent = p.subtitle || "";
 
@@ -843,7 +1168,7 @@
           <div class="companion-info">
             <div class="companion-name">
               <strong>${c.name}</strong>
-              <span class="realm">🪷 ${c.realm}</span>
+              <span class="realm">🪷 ${validRealm(c.realm)}</span>
             </div>
             <div class="companion-status">
               <span class="dot" style="--status-color:${c.statusColor || "#67d7a1"}"></span>
@@ -885,7 +1210,7 @@
         row.innerHTML = `
           <span class="name">${c.name}</span>
           <span class="desc">${c.status}</span>
-          <span class="value">${c.realm}</span>
+          <span class="value">${validRealm(c.realm)}</span>
         `;
         list.appendChild(row);
       });
@@ -931,6 +1256,69 @@
       });
     }
 
+
+    function renderCompact(){
+      const p = partyState.protagonist;
+      const realm = validRealm(p.realm);
+
+      document.querySelector("#compactName").textContent = p.name;
+      document.querySelector("#compactGender").textContent = p.gender;
+      document.querySelector("#compactRealm").textContent = realm;
+      document.querySelector("#compactAffiliation").textContent = p.affiliation;
+      document.querySelector("#compactRealmBadge").style.setProperty("--rank-rgb", rankRGB(realm));
+
+      const rep = document.querySelector("#compactReputation");
+      rep.innerHTML = "";
+      (p.reputation || []).forEach(text => {
+        const span = document.createElement("span");
+        span.className = "rep-tag";
+        span.textContent = text;
+        rep.appendChild(span);
+      });
+
+      const compactParty = document.querySelector("#compactParty");
+      compactParty.innerHTML = partyState.companions.map(c => `
+        <article class="compact-card" style="--accent-rgb:${c.accentRGB || "110,160,255"}">
+          <div class="compact-sd" data-compact-stage>
+            <img src="${c.image}" alt="${c.name} SD" loading="lazy">
+            <div class="compact-sd-fallback">${c.name}<br>SD 이미지</div>
+          </div>
+          <div class="compact-card-info">
+            <strong>${c.name}</strong>
+            <span>🪷 ${validRealm(c.realm)}</span>
+          </div>
+        </article>
+      `).join("");
+      document.querySelector("#compactPartyCount").textContent = `${partyState.companions.length}명`;
+
+      compactParty.querySelectorAll("[data-compact-stage]").forEach(stage => {
+        const img = stage.querySelector("img");
+        const ok = () => stage.classList.add("has-image");
+        const fail = () => { stage.classList.remove("has-image"); img.style.display = "none"; };
+        if(img.complete) img.naturalWidth > 0 ? ok() : fail();
+        img.addEventListener("load", ok, {once:true});
+        img.addEventListener("error", fail, {once:true});
+      });
+
+      const s = partyState.userStatus;
+      [["Body",s.body],["Fatigue",s.fatigue],["Recoil",s.recoil]].forEach(([key,val]) => {
+        const v = clamp(val);
+        document.querySelector(`#compact${key}Bar`).style.setProperty("--value", `${v}%`);
+        document.querySelector(`#compact${key}Text`).textContent = `${v}%`;
+      });
+
+      document.querySelector("#compactTraining").textContent =
+        `🧘 ${s.cultivationTask} · ${clamp(s.cultivationProgress)}%`;
+
+      document.querySelector("#compactMoney").textContent =
+        Number(partyState.inventory.money || 0).toLocaleString("ko-KR");
+      document.querySelector("#compactMoneyUnit").textContent = partyState.inventory.moneyUnit || "";
+
+      document.querySelector("#compactPartyStatus").innerHTML = partyState.companions
+        .map(c => `<b style="color:#d9e1ef">${c.name}</b> ${c.status}`)
+        .join(" · ");
+    }
+
     function renderDebug(){
       document.querySelector("#debugState").textContent =
         JSON.stringify(partyState,null,2);
@@ -942,7 +1330,9 @@
       renderPartyStatus();
       renderUserStatus();
       renderInventory();
+      renderCompact();
       renderDebug();
+      applyView();
     }
 
     /* =========================================================
@@ -998,6 +1388,8 @@
 
     window.updateStateFromAI = function(patch){
       deepMerge(partyState, patch);
+      partyState.protagonist.realm = validRealm(partyState.protagonist.realm);
+      partyState.companions.forEach(c => c.realm = validRealm(c.realm));
       render();
     };
 
