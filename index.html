@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Party Status Dashboard</title>
+  <style>
+    :root{
+      --bg:#070a12;
+      --bg2:#0d1220;
+      --panel:rgba(17,23,39,.80);
+      --panel2:rgba(12,17,29,.90);
+      --line:rgba(255,255,255,.11);
+      --text:#eef2ff;
+      --muted:#9ba8bf;
+      --gold:#d8bd74;
+      --blue:#6ea0ff;
+      --green:#67d7a1;
+      --red:#e46a7d;
+      --violet:#b98cff;
+      --shadow:0 18px 60px rgba(0,0,0,.36);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(75,104,192,.16), transparent 30%),
+        radial-gradient(circle at 88% 13%, rgba(216,189,116,.12), transparent 28%),
+        radial-gradient(circle at 52% 90%, rgba(80,150,138,.10), transparent 32%),
+        linear-gradient(180deg,#070a12,#0b1020 58%,#070a12);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(to bottom,rgba(0,0,0,.8),transparent 92%);
+      pointer-events:none;
+    }
+
+    button,input{font:inherit}
+    img{display:block;max-width:100%}
+
+    .wrap{
+      width:min(1200px,calc(100% - 28px));
+      margin:28px auto 56px;
+    }
+
+    .topbar{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand-mark{
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      border:1px solid rgba(216,189,116,.5);
+      display:grid;
+      place-items:center;
+      color:var(--gold);
+      box-shadow:inset 0 0 28px rgba(216,189,116,.08);
+    }
+
+    .brand-mark::before{content:"✦"}
+
+    .brand strong{
+      display:block;
+      letter-spacing:.08em;
+      font-size:.9rem;
+    }
+
+    .brand small{
+      display:block;
+      margin-top:3px;
+      color:var(--muted);
+      font-size:.72rem;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:1px solid var(--line);
+      color:#dce5f6;
+      background:rgba(255,255,255,.045);
+      padding:9px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .btn:hover{background:rgba(255,255,255,.075)}
+    .btn.gold{
+      color:#fff0bf;
+      border-color:rgba(216,189,116,.38);
+      background:rgba(216,189,116,.11);
+    }
+
+    .shell{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(15,21,36,.88),rgba(9,13,22,.94));
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      position:relative;
+      padding:28px 28px 24px;
+      border-bottom:1px solid var(--line);
+      background:
+        radial-gradient(circle at 85% 20%, rgba(216,189,116,.10), transparent 26%),
+        linear-gradient(135deg,rgba(19,27,47,.92),rgba(11,15,25,.96));
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      right:-90px;
+      top:-110px;
+      width:300px;
+      height:300px;
+      border:1px solid rgba(216,189,116,.12);
+      border-radius:50%;
+      box-shadow:
+        0 0 0 30px rgba(216,189,116,.025),
+        0 0 0 70px rgba(216,189,116,.015);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      color:#d9c27f;
+      font-size:.7rem;
+      font-weight:700;
+      letter-spacing:.16em;
+      margin-bottom:8px;
+    }
+
+    .hero-row{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:16px;
+      align-items:end;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(2rem,5vw,4rem);
+      letter-spacing:-.04em;
+      line-height:.98;
+    }
+
+    .hero-sub{
+      margin:11px 0 0;
+      color:#aebbd1;
+      font-size:.9rem;
+      line-height:1.7;
+    }
+
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:16px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:#dfe7f7;
+      background:rgba(255,255,255,.035);
+      font-size:.78rem;
+    }
+
+    .badge b{color:#8f9db6;font-weight:600}
+
+    .reputation{
+      min-width:260px;
+      max-width:380px;
+      padding:15px 16px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(0,0,0,.16);
+    }
+
+    .reputation-title{
+      color:#f3f6ff;
+      font-weight:700;
+      margin-bottom:9px;
+      font-size:.86rem;
+    }
+
+    .rep-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+    }
+
+    .rep-tag{
+      padding:6px 8px;
+      border-radius:999px;
+      background:rgba(216,189,116,.08);
+      border:1px solid rgba(216,189,116,.16);
+      color:#e8d8a4;
+      font-size:.72rem;
+    }
+
+    .section{
+      padding:24px 28px 28px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .section:last-child{border-bottom:0}
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-end;
+      margin-bottom:14px;
+    }
+
+    .section-head h2{
+      margin:0;
+      font-size:1.15rem;
+    }
+
+    .section-head p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:.8rem;
+    }
+
+    .party-strip{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .companion-card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:
+        linear-gradient(180deg,rgba(23,31,52,.90),rgba(12,17,29,.95));
+      min-height:236px;
+      transition:.2s ease;
+    }
+
+    .companion-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(216,189,116,.3);
+    }
+
+    .sd-stage{
+      position:relative;
+      height:152px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      background:
+        radial-gradient(circle at 50% 80%, rgba(var(--accent-rgb),.22), transparent 38%),
+        linear-gradient(180deg,rgba(255,255,255,.025),rgba(0,0,0,.06));
+      overflow:hidden;
+    }
+
+    .sd-stage::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:12px;
+      width:110px;
+      height:24px;
+      transform:translateX(-50%);
+      background:radial-gradient(ellipse,rgba(0,0,0,.45),transparent 66%);
+      filter:blur(3px);
+    }
+
+    .sd-stage img{
+      position:relative;
+      z-index:2;
+      height:142px;
+      width:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 14px 22px rgba(0,0,0,.35));
+    }
+
+    .sd-fallback{
+      position:absolute;
+      z-index:1;
+      inset:auto 12px 18px;
+      height:118px;
+      border:1px dashed rgba(255,255,255,.12);
+      border-radius:18px 18px 12px 12px;
+      display:grid;
+      place-items:center;
+      color:#8190a8;
+      text-align:center;
+      font-size:.74rem;
+      line-height:1.55;
+      padding:10px;
+    }
+
+    .sd-stage.has-image .sd-fallback{display:none}
+
+    .companion-info{
+      padding:13px 14px 15px;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .companion-name{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      align-items:center;
+    }
+
+    .companion-name strong{font-size:.95rem}
+    .realm{
+      color:#d8c27b;
+      font-size:.7rem;
+      white-space:nowrap;
+    }
+
+    .companion-status{
+      margin-top:7px;
+      color:#9eacc2;
+      font-size:.76rem;
+      line-height:1.45;
+    }
+
+    .dot{
+      display:inline-block;
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      margin-right:6px;
+      background:var(--status-color,#67d7a1);
+      box-shadow:0 0 10px color-mix(in srgb,var(--status-color,#67d7a1) 65%,transparent);
+    }
+
+    .lower-grid{
+      display:grid;
+      grid-template-columns:1fr 1.15fr .9fr;
+      gap:14px;
+    }
+
+    .panel{
+      min-width:0;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:rgba(255,255,255,.028);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      padding:14px 16px 12px;
+      border-bottom:1px solid rgba(255,255,255,.075);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+    }
+
+    .panel-head strong{font-size:.88rem}
+    .panel-head span{
+      color:#7f8da6;
+      font-size:.7rem;
+    }
+
+    .panel-body{padding:14px 16px 16px}
+
+    .status-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .status-row{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:8px;
+      align-items:center;
+      font-size:.78rem;
+    }
+
+    .status-row .name{color:#dfe6f4}
+    .status-row .desc{color:#8f9cb1}
+    .status-row .value{color:#c8d2e3}
+
+    .meters{
+      display:grid;
+      gap:13px;
+    }
+
+    .meter-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+      font-size:.76rem;
+    }
+
+    .meter-top span:first-child{color:#dfe6f4}
+    .meter-top span:last-child{color:#8794aa}
+
+    .meter{
+      height:9px;
+      border-radius:999px;
+      background:#252b38;
+      overflow:hidden;
+    }
+
+    .meter > i{
+      display:block;
+      height:100%;
+      width:var(--value,50%);
+      border-radius:inherit;
+      background:linear-gradient(90deg,var(--meter-a,#6ea0ff),var(--meter-b,#9dc0ff));
+      box-shadow:0 0 18px color-mix(in srgb,var(--meter-a,#6ea0ff) 28%,transparent);
+      transition:width .5s ease;
+    }
+
+    .training-box{
+      margin-top:15px;
+      padding:12px;
+      border:1px solid rgba(216,189,116,.14);
+      background:rgba(216,189,116,.05);
+      border-radius:14px;
+    }
+
+    .training-box strong{
+      display:block;
+      font-size:.78rem;
+      color:#eadcae;
+    }
+
+    .training-box p{
+      margin:5px 0 0;
+      color:#9da9bd;
+      font-size:.74rem;
+      line-height:1.55;
+    }
+
+    .ability-tags,.inventory-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:10px;
+    }
+
+    .mini-tag{
+      padding:5px 7px;
+      border-radius:999px;
+      font-size:.69rem;
+      color:#ccd6e7;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+    }
+
+    .money{
+      font-size:1.65rem;
+      font-weight:800;
+      letter-spacing:-.03em;
+      color:#f1d88d;
+    }
+
+    .money small{
+      font-size:.72rem;
+      color:#8d9ab0;
+      font-weight:500;
+      margin-left:5px;
+    }
+
+    .inventory-list{
+      margin:13px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+
+    .inventory-list li{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:.76rem;
+      color:#cbd4e4;
+      padding-bottom:7px;
+      border-bottom:1px dashed rgba(255,255,255,.08);
+    }
+
+    .inventory-list li:last-child{border-bottom:0;padding-bottom:0}
+    .inventory-list span:last-child{color:#8d9ab0}
+
+    .footer-note{
+      padding:14px 28px 18px;
+      color:#68758b;
+      font-size:.7rem;
+      text-align:center;
+    }
+
+    .debug{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      background:rgba(5,8,14,.75);
+    }
+
+    .debug summary{
+      cursor:pointer;
+      padding:12px 14px;
+      color:#b6c2d5;
+      font-size:.78rem;
+    }
+
+    .debug pre{
+      margin:0;
+      padding:14px;
+      overflow:auto;
+      border-top:1px solid var(--line);
+      color:#9cc6ff;
+      font-size:.72rem;
+      line-height:1.55;
+    }
+
+    @media(max-width:980px){
+      .hero-row{grid-template-columns:1fr}
+      .reputation{max-width:none}
+      .party-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .lower-grid{grid-template-columns:1fr 1fr}
+      .lower-grid .panel:last-child{grid-column:1/-1}
+    }
+
+    @media(max-width:680px){
+      .wrap{width:min(100% - 16px,1200px);margin:10px auto 28px}
+      .topbar{align-items:flex-start;flex-direction:column}
+      .toolbar{width:100%;justify-content:flex-start}
+      .shell{border-radius:22px}
+      .hero,.section{padding-left:16px;padding-right:16px}
+      .party-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .sd-stage{height:132px}
+      .sd-stage img{height:124px}
+      .lower-grid{grid-template-columns:1fr}
+      .lower-grid .panel:last-child{grid-column:auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <strong>PARTY STATUS</strong>
+          <small>GitHub Pages · Single-file demo</small>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="saveBtn">상태 저장</button>
+        <button class="btn" id="resetBtn">초기화</button>
+        <button class="btn gold" id="demoBtn">데모 변화</button>
+      </div>
+    </div>
+
+    <main class="shell">
+      <!-- 상단: 주인공 프로필 -->
+      <section class="hero">
+        <div class="eyebrow">PROTAGONIST PROFILE</div>
+
+        <div class="hero-row">
+          <div>
+            <h1 id="heroName">주인공</h1>
+            <p class="hero-sub" id="heroSubtitle">현재 파티와 함께 만다라바르샤를 여행 중.</p>
+
+            <div class="hero-badges">
+              <span class="badge"><b>성별</b><span id="heroGender">여성</span></span>
+              <span class="badge"><b>경지</b><span id="heroRealm">연단경 중기</span></span>
+              <span class="badge"><b>소속</b><span id="heroAffiliation">무소속</span></span>
+            </div>
+          </div>
+
+          <aside class="reputation">
+            <div class="reputation-title">📣 평판</div>
+            <div class="rep-tags" id="reputationTags"></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 중단: 동료 SD -->
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <h2>👥 현재 동행 중</h2>
+            <p>동행 중인 동료만 자동으로 표시됩니다.</p>
+          </div>
+          <span id="partyCount" style="color:#8794aa;font-size:.75rem">0명</span>
+        </div>
+
+        <div class="party-strip" id="partyStrip"></div>
+      </section>
+
+      <!-- 하단 -->
+      <section class="section">
+        <div class="lower-grid">
+          <!-- 동료 상태 -->
+          <article class="panel">
+            <div class="panel-head">
+              <strong>🤝 동료 상태</strong>
+              <span>PARTY</span>
+            </div>
+            <div class="panel-body">
+              <div class="status-list" id="partyStatusList"></div>
+            </div>
+          </article>
+
+          <!-- 유저 상태 -->
+          <article class="panel">
+            <div class="panel-head">
+              <strong>❤️‍🩹 유저 상태</strong>
+              <span>STATUS</span>
+            </div>
+            <div class="panel-body">
+              <div class="meters">
+                <div>
+                  <div class="meter-top"><span>신체</span><span id="bodyText">0%</span></div>
+                  <div class="meter"><i id="bodyBar" style="--meter-a:#67d7a1;--meter-b:#9be8c4"></i></div>
+                </div>
+                <div>
+                  <div class="meter-top"><span>피로</span><span id="fatigueText">0%</span></div>
+                  <div class="meter"><i id="fatigueBar" style="--meter-a:#e3b86d;--meter-b:#f0d59b"></i></div>
+                </div>
+                <div>
+                  <div class="meter-top"><span>반동</span><span id="recoilText">0%</span></div>
+                  <div class="meter"><i id="recoilBar" style="--meter-a:#b98cff;--meter-b:#d2b7ff"></i></div>
+                </div>
+              </div>
+
+              <div class="training-box">
+                <strong>🧘 수행</strong>
+                <p id="trainingText"></p>
+              </div>
+
+              <div class="ability-tags" id="abilityTags"></div>
+            </div>
+          </article>
+
+          <!-- 재산 -->
+          <article class="panel">
+            <div class="panel-head">
+              <strong>🎒 가방 / 재산</strong>
+              <span>INVENTORY</span>
+            </div>
+            <div class="panel-body">
+              <div class="money"><span id="moneyText">0</span><small id="moneyUnit">은전</small></div>
+              <ul class="inventory-list" id="inventoryList"></ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="footer-note">
+        assets/sd/ 폴더에 SD 이미지를 넣고 아래 partyState의 image 경로만 맞추면 자동으로 표시됩니다.
+      </div>
+    </main>
+
+    <details class="debug">
+      <summary>개발용 상태 데이터 보기</summary>
+      <pre id="debugState"></pre>
+    </details>
+  </div>
+
+  <script>
+    /* =========================================================
+       1) 상태 데이터
+       GitHub Pages에서는 이 객체를 수정해도 되고,
+       나중에 AI 출력(JSON)을 받아 Object.assign() 해도 됩니다.
+       ========================================================= */
+
+    const DEFAULT_STATE = {
+      protagonist: {
+        name: "주인공",
+        gender: "여성",
+        realm: "연단경 중기",
+        affiliation: "무소속",
+        subtitle: "현재 파티와 함께 만다라바르샤를 여행 중.",
+        reputation: [
+          "도문: 주목받는 수행자",
+          "상단: 신뢰 가능",
+          "민간: 이름이 알려지기 시작함"
+        ]
+      },
+
+      companions: [
+        {
+          id: "arvan",
+          name: "아르반",
+          realm: "연기경",
+          status: "정상 · 집중 양호",
+          statusColor: "#67d7a1",
+          accentRGB: "90,130,210",
+          image: "./assets/sd/arvan.webp"
+        },
+        {
+          id: "hyunri",
+          name: "현리",
+          realm: "심법승",
+          status: "영력 안정 · 피로 낮음",
+          statusColor: "#79cbb4",
+          accentRGB: "210,170,95",
+          image: "./assets/sd/hyunri.webp"
+        },
+        {
+          id: "ramani",
+          name: "라마니",
+          realm: "검심경",
+          status: "경상 · 전의 높음",
+          statusColor: "#e3b86d",
+          accentRGB: "190,75,75",
+          image: "./assets/sd/ramani.webp"
+        },
+        {
+          id: "ryeonhwa",
+          name: "련화",
+          realm: "연단경 중기",
+          status: "정상 · 감정 기복 있음",
+          statusColor: "#e46a7d",
+          accentRGB: "155,30,60",
+          image: "./assets/sd/ryeonhwa.webp"
+        }
+      ],
+
+      userStatus: {
+        body: 82,
+        fatigue: 41,
+        recoil: 24,
+        cultivationTask: "봉인술 완성",
+        cultivationProgress: 72,
+        abilities: ["부적진", "홍사박", "진언결계", "봉혼부"]
+      },
+
+      inventory: {
+        money: 37,
+        moneyUnit: "은전",
+        items: [
+          { name: "부적", qty: 23 },
+          { name: "약병", qty: 4 },
+          { name: "은침", qty: 12 },
+          { name: "여행 식량", qty: 6 }
+        ]
+      }
+    };
+
+    let partyState = loadState();
+
+    function clone(obj){
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function clamp(v,min=0,max=100){
+      const n = Number(v);
+      if(Number.isNaN(n)) return min;
+      return Math.max(min,Math.min(max,n));
+    }
+
+    function loadState(){
+      try{
+        const saved = localStorage.getItem("party-status-demo");
+        return saved ? JSON.parse(saved) : clone(DEFAULT_STATE);
+      }catch{
+        return clone(DEFAULT_STATE);
+      }
+    }
+
+    function saveState(){
+      localStorage.setItem("party-status-demo", JSON.stringify(partyState));
+    }
+
+    /* =========================================================
+       2) 렌더링
+       ========================================================= */
+
+    function renderHeader(){
+      const p = partyState.protagonist;
+      document.querySelector("#heroName").textContent = p.name;
+      document.querySelector("#heroGender").textContent = p.gender;
+      document.querySelector("#heroRealm").textContent = p.realm;
+      document.querySelector("#heroAffiliation").textContent = p.affiliation;
+      document.querySelector("#heroSubtitle").textContent = p.subtitle || "";
+
+      const rep = document.querySelector("#reputationTags");
+      rep.innerHTML = "";
+      (p.reputation || []).forEach(text => {
+        const span = document.createElement("span");
+        span.className = "rep-tag";
+        span.textContent = text;
+        rep.appendChild(span);
+      });
+    }
+
+    function companionCard(c){
+      return `
+        <article class="companion-card" style="--accent-rgb:${c.accentRGB || "110,160,255"}">
+          <div class="sd-stage" data-sd-stage>
+            <img src="${c.image}" alt="${c.name} SD 일러스트" loading="lazy">
+            <div class="sd-fallback">
+              ${c.name}<br>
+              <small>${c.image.replace("./","")}</small>
+            </div>
+          </div>
+          <div class="companion-info">
+            <div class="companion-name">
+              <strong>${c.name}</strong>
+              <span class="realm">🪷 ${c.realm}</span>
+            </div>
+            <div class="companion-status">
+              <span class="dot" style="--status-color:${c.statusColor || "#67d7a1"}"></span>
+              ${c.status}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCompanions(){
+      const strip = document.querySelector("#partyStrip");
+      strip.innerHTML = partyState.companions.map(companionCard).join("");
+      document.querySelector("#partyCount").textContent = `${partyState.companions.length}명`;
+
+      strip.querySelectorAll("[data-sd-stage]").forEach(stage => {
+        const img = stage.querySelector("img");
+        const ok = () => stage.classList.add("has-image");
+        const fail = () => {
+          stage.classList.remove("has-image");
+          img.style.display = "none";
+        };
+
+        if(img.complete){
+          img.naturalWidth > 0 ? ok() : fail();
+        }
+        img.addEventListener("load", ok, {once:true});
+        img.addEventListener("error", fail, {once:true});
+      });
+    }
+
+    function renderPartyStatus(){
+      const list = document.querySelector("#partyStatusList");
+      list.innerHTML = "";
+
+      partyState.companions.forEach(c => {
+        const row = document.createElement("div");
+        row.className = "status-row";
+        row.innerHTML = `
+          <span class="name">${c.name}</span>
+          <span class="desc">${c.status}</span>
+          <span class="value">${c.realm}</span>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function setMeter(id, value){
+      const v = clamp(value);
+      document.querySelector(`#${id}Bar`).style.setProperty("--value", `${v}%`);
+      document.querySelector(`#${id}Text`).textContent = `${v}%`;
+    }
+
+    function renderUserStatus(){
+      const s = partyState.userStatus;
+      setMeter("body", s.body);
+      setMeter("fatigue", s.fatigue);
+      setMeter("recoil", s.recoil);
+
+      document.querySelector("#trainingText").textContent =
+        `${s.cultivationTask} · 검증 진전 ${clamp(s.cultivationProgress)}%`;
+
+      const tags = document.querySelector("#abilityTags");
+      tags.innerHTML = "";
+      (s.abilities || []).forEach(a => {
+        const span = document.createElement("span");
+        span.className = "mini-tag";
+        span.textContent = `⚡ ${a}`;
+        tags.appendChild(span);
+      });
+    }
+
+    function renderInventory(){
+      const inv = partyState.inventory;
+      document.querySelector("#moneyText").textContent =
+        Number(inv.money || 0).toLocaleString("ko-KR");
+      document.querySelector("#moneyUnit").textContent = inv.moneyUnit || "";
+
+      const list = document.querySelector("#inventoryList");
+      list.innerHTML = "";
+      (inv.items || []).forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${item.name}</span><span>× ${item.qty}</span>`;
+        list.appendChild(li);
+      });
+    }
+
+    function renderDebug(){
+      document.querySelector("#debugState").textContent =
+        JSON.stringify(partyState,null,2);
+    }
+
+    function render(){
+      renderHeader();
+      renderCompanions();
+      renderPartyStatus();
+      renderUserStatus();
+      renderInventory();
+      renderDebug();
+    }
+
+    /* =========================================================
+       3) 데모 / 저장 버튼
+       ========================================================= */
+
+    document.querySelector("#saveBtn").addEventListener("click", () => {
+      saveState();
+      alert("현재 상태를 브라우저에 저장했습니다.");
+    });
+
+    document.querySelector("#resetBtn").addEventListener("click", () => {
+      localStorage.removeItem("party-status-demo");
+      partyState = clone(DEFAULT_STATE);
+      render();
+    });
+
+    document.querySelector("#demoBtn").addEventListener("click", () => {
+      partyState.userStatus.fatigue = clamp(partyState.userStatus.fatigue + 8);
+      partyState.userStatus.recoil = clamp(partyState.userStatus.recoil + 5);
+      partyState.userStatus.body = clamp(partyState.userStatus.body - 4);
+      partyState.inventory.money = Math.max(0, partyState.inventory.money - 3);
+
+      if(partyState.companions[2]){
+        partyState.companions[2].status = "피로 누적 · 전의 유지";
+        partyState.companions[2].statusColor = "#e3b86d";
+      }
+
+      render();
+    });
+
+    /* =========================================================
+       4) 나중에 AI 상태 JSON 연결용 함수
+       예:
+       updateStateFromAI({
+         userStatus:{ fatigue:55 },
+         inventory:{ money:42 }
+       });
+       ========================================================= */
+
+    function deepMerge(target, source){
+      for(const key of Object.keys(source || {})){
+        const val = source[key];
+        if(val && typeof val === "object" && !Array.isArray(val)){
+          if(!target[key] || typeof target[key] !== "object") target[key] = {};
+          deepMerge(target[key], val);
+        }else{
+          target[key] = val;
+        }
+      }
+      return target;
+    }
+
+    window.updateStateFromAI = function(patch){
+      deepMerge(partyState, patch);
+      render();
+    };
+
+    render();
+  </script>
+</body>
+</html>
