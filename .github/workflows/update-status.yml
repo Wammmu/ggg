@@ -1,0 +1,86 @@
+name: Update Party Status
+
+on:
+  # 외부 캐릭터 채팅/API가 호출하는 이벤트
+  repository_dispatch:
+    types:
+      - status_update
+
+  # GitHub Actions 화면에서 직접 시험할 때 사용
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: '상태 변경 JSON'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+# 여러 대화 업데이트가 동시에 들어와 state.json을 덮어쓰지 않도록 직렬 실행
+concurrency:
+  group: party-status-update
+  cancel-in-progress: false
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Create payload file
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_PAYLOAD: ${{ toJson(github.event.client_payload) }}
+          MANUAL_PAYLOAD: ${{ inputs.payload }}
+        run: |
+          if [ "$EVENT_NAME" = "repository_dispatch" ]; then
+            printf '%s' "$DISPATCH_PAYLOAD" > /tmp/status-payload.json
+          else
+            printf '%s' "$MANUAL_PAYLOAD" > /tmp/status-payload.json
+          fi
+
+          echo "Payload:"
+          cat /tmp/status-payload.json
+
+      - name: Update state.json
+        run: node update-state.js /tmp/status-payload.json
+
+      - name: Generate status.svg
+        run: node generate.js
+
+      - name: Verify output
+        run: |
+          test -f state.json
+          test -f status.svg
+          echo "state.json + status.svg OK"
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add state.json status.svg
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          VERSION=$(node -p "require('./state.json').version || 0")
+          git commit -m "Update party status v${VERSION}"
+
+          # 다른 커밋이 먼저 들어온 경우 한 번 동기화
+          git pull --rebase origin main
+          git push origin main
