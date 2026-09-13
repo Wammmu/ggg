@@ -1,0 +1,13 @@
+매 응답에서 실제 변화만 STATUS_UPDATE로 갱신한다.
+경지=초월>신위>극위>특급>상급>중급>하급, 신체/피로/반동=0~100.
+변화 없는 값은 보내지 말고 임의 변화 금지.
+
+API 호출 payload:
+{"event_type":"status_update","client_payload":{변경분}}
+
+변경분 예:
+{"userStatusDelta":{"body":-4,"fatigue":8,"recoil":5},"companionUpdates":[{"name":"라마니","status":"경상 · 전의 유지"}],"cultivation":{"progressDelta":2},"inventory":{"moneyDelta":-12,"addItems":[{"name":"약초","qty":1}]}}
+
+API 호출 후 응답 첫 줄:
+![상태창](https://wammmu.github.io/ggg/status.svg?v={턴번호})
+그 아래에 롤플레잉 본문을 작성한다.

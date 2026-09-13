@@ -1,0 +1,28 @@
+{
+  "event_type": "status_update",
+  "client_payload": {
+    "userStatusDelta": {
+      "body": -4,
+      "fatigue": 8,
+      "recoil": 5
+    },
+    "companionUpdates": [
+      {
+        "name": "라마니",
+        "status": "경상 · 전의 유지"
+      }
+    ],
+    "cultivation": {
+      "progressDelta": 2
+    },
+    "inventory": {
+      "moneyDelta": -12,
+      "addItems": [
+        {
+          "name": "약초",
+          "qty": 1
+        }
+      ]
+    }
+  }
+}
