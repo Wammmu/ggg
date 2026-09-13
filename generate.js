@@ -246,7 +246,10 @@ function companionCard(
 ) {
 
   const CARD_WIDTH = 170;
+  const CARD_HEIGHT = 135;
   const GAP = 10;
+
+  const PHOTO_SIZE = 108;
 
   const x =
     20 + index * (CARD_WIDTH + GAP);
@@ -262,30 +265,38 @@ function companionCard(
   const clipId =
     `clip-${index}`;
 
+  /* 사진을 카드 중앙에 배치 */
+  const photoX =
+    x + (CARD_WIDTH - PHOTO_SIZE) / 2;
+
+  const photoY =
+    y + 6;
+
+
   const imageSVG = image
     ? `
       <image
         href="${image}"
-        x="${x + 8}"
-        y="${y + 5}"
-        width="154"
-        height="72"
-        preserveAspectRatio="xMidYMid meet"
+        x="${photoX}"
+        y="${photoY}"
+        width="${PHOTO_SIZE}"
+        height="${PHOTO_SIZE}"
+        preserveAspectRatio="xMidYMid slice"
         clip-path="url(#${clipId})"
       />
     `
     : `
       <circle
-        cx="${x + 85}"
-        cy="${y + 40}"
-        r="28"
+        cx="${x + CARD_WIDTH / 2}"
+        cy="${photoY + PHOTO_SIZE / 2}"
+        r="38"
         fill="#232a38"
         stroke="#4b566b"
       />
 
       <text
-        x="${x + 85}"
-        y="${y + 46}"
+        x="${x + CARD_WIDTH / 2}"
+        y="${photoY + PHOTO_SIZE / 2 + 9}"
         text-anchor="middle"
         class="fallback"
       >
@@ -295,48 +306,61 @@ function companionCard(
       </text>
     `;
 
+
   return `
+
+    <!-- 사진 클리핑 -->
     <clipPath id="${clipId}">
       <rect
-        x="${x + 7}"
-        y="${y + 5}"
-        width="156"
-        height="74"
-        rx="12"
+        x="${photoX}"
+        y="${photoY}"
+        width="${PHOTO_SIZE}"
+        height="${PHOTO_SIZE}"
+        rx="14"
       />
     </clipPath>
 
+
+    <!-- 카드 전체 -->
     <rect
       x="${x}"
       y="${y}"
       width="${CARD_WIDTH}"
-      height="123"
+      height="${CARD_HEIGHT}"
       rx="15"
       class="companionCard"
     />
 
+
+    <!-- 사진 테두리 -->
     <rect
-      x="${x + 6}"
-      y="${y + 5}"
-      width="158"
-      height="75"
-      rx="12"
-      fill="#141b29"
+      x="${photoX - 2}"
+      y="${photoY - 2}"
+      width="${PHOTO_SIZE + 4}"
+      height="${PHOTO_SIZE + 4}"
+      rx="16"
+      fill="#0d131f"
+      stroke="#39465c"
     />
+
 
     ${imageSVG}
 
+
+    <!-- 이름 -->
     <text
       x="${x + 12}"
-      y="${y + 99}"
+      y="${y + 128}"
       class="companionName"
     >
       ${escapeXML(companion.name)}
     </text>
 
+
+    <!-- 경지 -->
     <text
-      x="${x + 158}"
-      y="${y + 99}"
+      x="${x + CARD_WIDTH - 12}"
+      y="${y + 128}"
       text-anchor="end"
       fill="${REALM_COLORS[realm]}"
       class="companionRealm"
@@ -344,15 +368,6 @@ function companionCard(
       ${escapeXML(realm)}
     </text>
 
-    <text
-      x="${x + 12}"
-      y="${y + 116}"
-      class="companionStatus"
-    >
-      ${escapeXML(
-        truncate(companion.status, 19)
-      )}
-    </text>
   `;
 }
 
